@@ -9,12 +9,9 @@ pipeline {
         stage('01-Build') {
             steps {
                 echo "Building"
-                script {
                  def packageJSON = readJSON file: 'package.json'
                  def version = packageJSON.version
                  echo "VERSION: ${version}"
-                }
-            }
         }
         stage('02-Test') {
             steps{
