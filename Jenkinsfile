@@ -9,25 +9,16 @@ pipeline {
         stage('01-Build') {
             steps {
                 echo "Building"
-                script {
-
-                }
             }
         }
         stage('02-Test') {
             steps{
                 echo "Testing"
-                script {
-
-                }
             }
         }
             stage('03-Deploy') {
                 steps {
                     echo "Deploying"
-                    script {
-
-                    }
                 }
             }
     }
