@@ -13,6 +13,7 @@ pipeline {
                  def version = packageJSON.version
                  echo "VERSION: ${version}"
         }
+        }
         stage('02-Test') {
             steps{
                 echo "Testing"
