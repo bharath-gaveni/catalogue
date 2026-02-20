@@ -5,17 +5,42 @@ pipeline {
         }
     }
 
+    environment {
+        version=""
+    }
+
     stages {
-        stage('01-Build') {
+        stage('Read version') {
             steps {
                 script {
                 echo "Building"
                  def packageJSON = readJSON file: 'package.json'
-                 def version = packageJSON.version
+                    version = packageJSON.version
                  echo "VERSION: ${version}"
                 }
         }
         }
+
+        stage('Install dependencies') {
+            steps {
+                script {
+                    sh """
+                    npm install
+                    """
+                }
+            }
+        }
+
+        stage('Build the image') {
+            steps {
+                script {
+                    sh """
+                    docker build -t catalogue:${version} .
+                    """
+                }
+            }
+        }
+
         stage('02-Test') {
             steps{
                 echo "Testing"
