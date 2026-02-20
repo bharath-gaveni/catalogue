@@ -7,6 +7,9 @@ pipeline {
 
     environment {
         version=""
+        ACC_ID="478810312299"
+        project="roboshop"
+        component="catalogue"
     }
 
     stages {
@@ -34,12 +37,17 @@ pipeline {
         stage('Build the image') {
             steps {
                 script {
-                    sh """
-                    docker build -t catalogue:${version} .
-                    """
+                    withAWS(region:'us-east-1',credentials:'aws-cred') {
+                        sh """
+                        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
+                        docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${version} .
+                        docker images
+                        docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${version}
+                        """
+}
                 }
             }
-        }
+        } 
 
         stage('02-Test') {
             steps{
